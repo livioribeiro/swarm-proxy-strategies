@@ -1,13 +1,28 @@
 version: "3.4"
 
 services:
-  docker_socket:
-    image: "nginx:1.13.8"
+  # expose docker endpoint using nginx
+  docker_endpoint_nginx:
+    image: "nginx:1.13.8-alpine"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     configs:
       - source: nginx_conf
         target: "/etc/nginx/nginx.conf"
+    deploy:
+      mode: global
+      placement:
+        constraints:
+         - node.role == manager
+
+  # expose docker endpoint using haproxy
+  docker_endpoint_haproxy:
+    image: "haproxy:1.8.3-alpine"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    configs:
+      - source: haproxy_conf
+        target: /usr/local/etc/haproxy/haproxy.cfg
     deploy:
       mode: global
       placement:
@@ -20,7 +35,8 @@ services:
       - --docker
       - --docker.swarmmode
       - --docker.domain=localtest.me
-      - --docker.endpoint=http://docker_socket:4999
+      - --docker.endpoint=http://docker_endpoint_nginx:4999
+      # - --docker.endpoint=http://docker_endpoint_haproxy:4999
       - --docker.watch
       - --web
     ports:
@@ -35,6 +51,8 @@ services:
 configs:
   nginx_conf:
     file: ./nginx.conf
+  haproxy_conf:
+    file: ./haproxy.cfg
 
 networks:
   proxy:
