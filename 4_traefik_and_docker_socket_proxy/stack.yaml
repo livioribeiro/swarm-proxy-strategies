@@ -1,6 +1,5 @@
 version: "3.4"
 
-services:
   # expose docker endpoint using nginx
   docker_proxy_nginx:
     image: "nginx:1.13.8-alpine"
@@ -36,7 +35,7 @@ services:
       - --docker.swarmmode
       - --docker.domain=localtest.me
       # use nginx as docker socket proxy
-      - --docker.endpoint=http://docker_endpoint_nginx:4999
+      - --docker.endpoint=http://docker_endpoint_swindon:4999
       # use haproxy as docker socket proxy
       # - --docker.endpoint=http://docker_endpoint_haproxy:4999
       - --docker.watch
@@ -55,6 +54,8 @@ configs:
     file: ./nginx.conf
   haproxy_conf:
     file: ./haproxy.cfg
+  swindon_yaml:
+    file: ./swindon.yaml
 
 networks:
   proxy:

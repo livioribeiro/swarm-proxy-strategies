@@ -1,0 +1,35 @@
+defaultEntryPoints = ["http"]
+
+[accessLog]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+[file]
+
+  [frontends]
+    [frontends.service1]
+    backend = "service1"
+      [frontends.service1.routes.test_1]
+      rule = "Host: service1.localtest.me"
+    [frontends.service2]
+    backend = "service2"
+      [frontends.service2.routes.test_1]
+      rule = "Host: service2.localtest.me"
+
+  [backends]
+    [backends.service1]
+      [backends.service1.servers.server1]
+        url = "http://192.168.99.100:9001"
+      [backends.service1.servers.server2]
+        url = "http://192.168.99.101:9001"
+      [backends.service1.servers.server3]
+        url = "http://192.168.99.102:9001"
+    [backends.service2]
+      [backends.service2.servers.server1]
+        url = "http://192.168.99.100:9002"
+      [backends.service2.servers.server2]
+        url = "http://192.168.99.101:9002"
+      [backends.service2.servers.server3]
+        url = "http://192.168.99.102:9002"

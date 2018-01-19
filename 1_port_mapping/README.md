@@ -1,11 +1,11 @@
 # Port Mapping
 
-## create some services
+## Create some services
 
-    $ docker service create --name service-1 --publish 9001:80 nginx
-    $ docker service create --name service-2 --publish 9002:80 httpd
+    docker service create --name service-1 --publish 9001:80 nginx && \
+    docker service create --name service-2 --publish 9002:80 httpd
 
-## configure nginx
+## Configure nginx
 
 ```nginx
 upstream swarm_cluster {

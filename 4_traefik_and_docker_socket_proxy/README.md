@@ -2,13 +2,13 @@
 
 ## Create network
 
-    $ docker network create --driver overlay proxy
+    docker network create --driver overlay proxy
 
 ## Create some services
 
-    $ docker service create --name service-1 \
-        --network proxy --label traefik.port=80 nginx
-    $ docker service create --name service-2 \
+    docker service create --name service-1 \
+        --network proxy --label traefik.port=80 nginx && \
+    docker service create --name service-2 \
         --network proxy --label traefik.port=80 httpd
 
 ## Nginx configuration
@@ -184,4 +184,4 @@ networks:
 
 ## Deploy stack
 
-    $ docker stack deploy -c stack.yaml proxy
+    docker stack deploy -c stack.yaml proxy

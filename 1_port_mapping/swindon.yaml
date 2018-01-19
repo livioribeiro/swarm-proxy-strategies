@@ -1,0 +1,24 @@
+listen:
+  - 127.0.0.1:80
+
+routing:
+  service1.localtest.me: service1
+  service2.localtest.me: service2
+
+handlers:
+  service1: !Proxy
+    destination: service1-dest
+  service2: !Proxy
+    destination: service2-dest
+
+http-destinations:
+  service1-dest:
+    addresses:
+      - 192.168.99.100:9001
+      - 192.168.99.101:9001
+      - 192.168.99.102:9001
+  service2-dest:
+    addresses:
+      - 192.168.99.100:9002
+      - 192.168.99.101:9002
+      - 192.168.99.102:9002
